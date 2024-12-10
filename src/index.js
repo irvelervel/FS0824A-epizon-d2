@@ -2,8 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
-import myReduxStore from './redux/store'
+import myReduxStore, { myPersistStore } from './redux/store'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './style/index.css'
@@ -13,6 +14,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   // forniamo a Provider il nostro Store con una proprietà chiamata "store"
   <Provider store={myReduxStore}>
-    <App />
+    {/* inseriamo un layer aggiuntivo per il mantenimento in memoria
+    del Redux Store */}
+    <PersistGate loading={null} persistor={myPersistStore}>
+      <App />
+    </PersistGate>
   </Provider>
 )
