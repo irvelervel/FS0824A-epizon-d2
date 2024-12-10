@@ -1,6 +1,6 @@
 import { Button, Form } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { FaShoppingCart } from 'react-icons/fa'
+import { FaExclamationTriangle, FaShoppingCart } from 'react-icons/fa'
 // impariamo a LEGGERE dallo stato di Redux
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
@@ -23,8 +23,14 @@ const CartIndicator = () => {
     return reduxState.user.name
   })
 
+  const getBooksError = useSelector((reduxState) => {
+    return reduxState.book.isError
+  })
+
   return (
     <div className="d-flex justify-content-end my-4 align-items-center">
+      {getBooksError && <FaExclamationTriangle className="me-2" />}
+
       {username !== '' ? (
         <>
           <span className="me-2">Ciao, {username}!</span>
@@ -49,7 +55,7 @@ const CartIndicator = () => {
             dispatch(setUsernameAction(inputValue))
           }}
         >
-          <Form.Group className="mb-3">
+          <Form.Group>
             <Form.Control
               // ...come sempre
               value={inputValue}
@@ -58,6 +64,7 @@ const CartIndicator = () => {
               }}
               type="text"
               placeholder="Fai il login"
+              disabled={getBooksError}
             />
           </Form.Group>
         </Form>

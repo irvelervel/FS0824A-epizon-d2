@@ -19,6 +19,10 @@ const Cart = () => {
     return reduxState.user.name
   })
 
+  const booksInStock = useSelector((reduxState) => {
+    return reduxState.book.inStock
+  })
+
   // otteniamo la funzione di dispatch
   const dispatch = useDispatch()
 
@@ -61,6 +65,11 @@ const Cart = () => {
             0
           )}
           $
+        </Col>
+      </Row>
+      <Row>
+        <Col sm={12} className="fw-bold mb-3 ms-4">
+          Nel negozio sono disponibili {booksInStock.length} libri!
         </Col>
       </Row>
     </Row>
