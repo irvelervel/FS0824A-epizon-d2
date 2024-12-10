@@ -2,8 +2,12 @@ import { Col, Row, Button } from 'react-bootstrap'
 import { FaTrash } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
 import { removeFromCartAction } from '../redux/actions'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const Cart = () => {
+  const navigate = useNavigate()
+
   // hooks di react-redux
 
   // cardArray sarà l'array di libri nel carrello in Redux
@@ -11,8 +15,19 @@ const Cart = () => {
     return reduxState.cart.content
   })
 
+  const username = useSelector((reduxState) => {
+    return reduxState.user.name
+  })
+
   // otteniamo la funzione di dispatch
   const dispatch = useDispatch()
+
+  // rimandiamo l'utente in homepage se non ha uno username
+  useEffect(() => {
+    if (username === '') {
+      navigate('/')
+    }
+  }, [])
 
   return (
     <Row>

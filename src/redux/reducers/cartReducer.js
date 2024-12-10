@@ -8,19 +8,13 @@ import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions'
 // al momento ci interessa salvare il contenuto del carrello dei libri!
 
 const initialState = {
-  // dividiamo per ragioni organizzative lo state in SLICES (fette)
-  cart: {
-    content: [], // all'inizio non abbiamo libri nel carrello
-    // ready: true,
-  },
-  // user: {
-  //   blabla: true,
-  // },
-  // immaginiamo di avere uno stato complesso
+  content: [], // all'inizio non abbiamo libri nel carrello
+  // ready: true,
 }
+// immaginiamo di avere uno stato complesso
 
 // alla prima invocazione di mainReducer (che avviene al caricamento della pagina) state è undefined (non esiste ancora!); diamo come valore di default del parametro state il nostro oggetto "initialState"
-const mainReducer = (state = initialState, action) => {
+const cartReducer = (state = initialState, action) => {
   // mainReducer calcolerà lo stato nuovo
   // quindi ritornerà SEMPRE un oggetto, il nuovo stato dell'app
 
@@ -35,35 +29,28 @@ const mainReducer = (state = initialState, action) => {
         // devo SEMPRE ritornare un oggetto, il nuovo stato dell'app
         ...state,
         // andiamo a riscrivere la slice di nostro interesse
-        cart: {
-          ...state.cart,
-          //   vado a ri-dichiarare "content" prestando attenzione a NON utilizzare metodi e tecniche che andrebbero ad alterare il valore di state, perchè in una funzione pura non si possono mutare i propri parametri
-          content: state.cart.content.concat(action.payload),
-          // NON POTETE USARE PUSH (perchè modifica l'array di partenza e di fatto ROMPE la funzione pura!)
-          //   content: [...state.cart.content, action.payload]
-        },
+        content: state.content.concat(action.payload),
+        // NON POTETE USARE PUSH (perchè modifica l'array di partenza e di fatto ROMPE la funzione pura!)
+        //   content: [...state.cart.content, action.payload]
       }
 
     case REMOVE_FROM_CART:
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          content: state.cart.content.filter((book, i) => {
-            if (i === action.payload) {
-              return false
-            } else {
-              return true
-            }
-          }),
-          // PRO VERSION
-          //   content: state.cart.content.filter((_, i) => i !== action.payload),
-          // METODO ALTERNATIVO CON SLICE
-          //   content: [
-          //     ...state.cart.content.slice(0, action.payload),
-          //     ...state.cart.content.slice(action.payload + 1),
-          //   ],
-        },
+        content: state.content.filter((book, i) => {
+          if (i === action.payload) {
+            return false
+          } else {
+            return true
+          }
+        }),
+        // PRO VERSION
+        //   content: state.content.filter((_, i) => i !== action.payload),
+        // METODO ALTERNATIVO CON SLICE
+        //   content: [
+        //     ...state.content.slice(0, action.payload),
+        //     ...state.content.slice(action.payload + 1),
+        //   ],
       }
 
     default:
@@ -73,4 +60,4 @@ const mainReducer = (state = initialState, action) => {
   }
 }
 
-export default mainReducer
+export default cartReducer
